@@ -18,12 +18,12 @@ namespace URL_Shortener.Services
         public string CreateShortUrl()
         {
             string shortUrl;
-            string pathBase = _httpContext.Request.PathBase;
+            string pathBase = _httpContext.Request.Scheme + "://" + _httpContext.Request.Host;
 
             do
             {
                 shortUrl = pathBase + "/" + CreateCode();
-            } while (!ShortUrlExists(shortUrl));
+            } while (ShortUrlExists(shortUrl));
 
             return shortUrl;
         }

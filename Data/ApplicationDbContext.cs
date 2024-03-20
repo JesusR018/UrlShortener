@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using URL_Shortener.Models;
 
 namespace URL_Shortener.Data
 {
@@ -8,6 +9,6 @@ namespace URL_Shortener.Data
         {
         }
 
-
+        public DbSet<UrlModel> Urls { get; set; }
     }
 }

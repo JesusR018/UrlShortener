@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model URL_Shortener.Models.UrlModel;
+
+<div class="text-center">
+
+    <h1 class="display-4 my-5">URL Shortener</h1>
+
+    <div class="mb-3">
+        <form action="/Url/Shorten" method="post">
+            <div class="form-group my-3">
+                <label for="inputEmail" class="h2">Insert a URL: </label>
+                <input type="text" class="form-control" id="inputEmail" name="originalUrl" placeholder="https://example.com" required />
+            </div>
+            <button type="submit" class="btn btn-primary col-4">Short</button>
+        </form>
+    </div>
+    
+    @if (!ViewData.ModelState.IsValid)
+    {
+        @Html.ValidationSummary(false, "", new { @class = "alert alert-dismissible alert-danger col-12 text-danger p-2 mb-0 mx-auto d-flex justify-content-center align-items-center rounded-pill" })
+    }
+
+    @if (Model != null)
+    {
+        <div class="bg-body-tertiary rounded w-75 mx-auto mt-5">
+            <div class="d-flex mx-2 align-items-center justify-content-between">
+                <div class="d-inline-flex col-6 justify-content-start font-weight-bold">
+                    <a href="@Model.ShortUrl" id="shortUrl">@Model.ShortUrl</a>
+                </div>
+                <div class="d-inline-flex col-2 justify-content-end">
+                    <div class="m-1">
+                        <button type="button" id="btnCopy" onClick="copyShortUrl()" class="btn btn-outline-primary"><i class="bi bi-clipboard-fill"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-top py-2 text-start mx-2">
+                <a href="@Model.OriginalUrl">@Model.OriginalUrl</a>
+            </div>
+        </div>
+    }
+
+    <script>
+        const copyShortUrl = async () => 
+        {
+            let shortUrl = document.getElementById("shortUrl").innerHTML;
+            await navigator.clipboard.writeText(shortUrl);
+            btnCopy.innerHTML = "<i class='bi bi-clipboard-check-fill'></i>";
+        }
+    </script>
+
+</div>

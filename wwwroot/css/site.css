@@ -20,3 +20,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+ul {
+    margin-bottom: 0;
+    list-style-type: none;
+}
+

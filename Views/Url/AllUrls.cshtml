@@ -1,0 +1,29 @@
+﻿@{
+	ViewData["Title"] = "Most Clicked";
+}
+@model List<UrlModel>
+
+<div>
+
+	<h1 class="display-4 text-center my-5">Most clicked URLs</h1>
+
+	<table class="table table-secondary table-hover text-primary-emphasis h-75">
+		<thead class="table-dark">
+			<tr>
+				<th scope="col">Original URL</th>
+				<th scope="col">Short URL</th>
+				<th scope="col">Number of clicks</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var url in Model.OrderByDescending(u => u.ClickCounter).Take(10))
+			{
+				<tr>
+					<td>@url.OriginalUrl</td>
+					<td>@url.ShortUrl</td>
+					<td>@url.ClickCounter</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>

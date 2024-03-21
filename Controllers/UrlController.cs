@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.ComponentModel.DataAnnotations;
 using URL_Shortener.Data;
 using URL_Shortener.Models;
 using URL_Shortener.Services;
@@ -28,7 +29,7 @@ namespace URL_Shortener.Controllers
             var urlToRedirect = _Db.Urls.FirstOrDefault(u => u.ShortUrl.EndsWith(id));
             if (urlToRedirect == null)
             {
-                ModelState.AddModelError("", "No URL has been found");
+                ModelState.AddModelError(string.Empty, "No URL has been found");
                 return View("Error");
             }
             urlToRedirect.ClickCounter++;
@@ -58,9 +59,12 @@ namespace URL_Shortener.Controllers
                 newUrl = _Db.Urls.FirstOrDefault(u => u.OriginalUrl == originalUrl);
             } else
             {
+
                 try
                 {
                     newUrl = new UrlModel(originalUrl, shortUrl);
+                    ValidationContext validationContext = new ValidationContext(newUrl);
+                    Validator.ValidateObject(newUrl, validationContext, true);
                     _Db.Urls.Add(newUrl);
                     _Db.SaveChanges();
                 } catch (Exception ex)
@@ -71,10 +75,11 @@ namespace URL_Shortener.Controllers
 
             if(newUrl != null && ModelState.IsValid)
             {
-                return View(newUrl);
-            }
+                return View("Views/Url/Index.cshtml", newUrl);
 
-            return RedirectToPage("/");
+			}
+
+            return View("Views/Url/Index.cshtml");
         }
     }
 }
